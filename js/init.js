@@ -1,7 +1,7 @@
 var KEYCODE_LEFT = 37, l_down = false,
-KEYCODE_RIGHT = 39, r_down = false,
-KEYCODE_UP = 38, u_down = false,
-KEYCODE_DOWN = 40, d_down = false; 
+    KEYCODE_RIGHT = 39, r_down = false,
+    KEYCODE_UP = 38, u_down = false,
+    KEYCODE_DOWN = 40, d_down = false; 
 var stage;
 var asteroid;
 var circle, x = 200, y = 200, speed = 2;
