@@ -43,26 +43,27 @@ function keyUpped(event) {
 	
 function start() { 
     //document.canvas.style.backgroundColor = "red";
-	asteroid = new createjs.Bitmap("./asteroid.png");
-	asteroid.x = asteroid.y = 200;		
+    asteroid = new createjs.Bitmap("./assets/asteroid.png");
+    asteroid.x = asteroid.y = 200;
 
-	stage = new createjs.Stage(document.getElementById("testCanvas"));
-	stage.addChild(asteroid);
+    stage = new createjs.Stage(document.getElementById("testCanvas"));
+    stage.addChild(asteroid);
     stage.addChild(circle);
-	stage.update();
-	
-	this.document.onkeydown = keyDowned;		
-	this.document.onkeyup = keyUpped;	
+    stage.update();
+    
+    this.document.onkeydown = keyDowned;		
+    this.document.onkeyup = keyUpped;	
 
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", stage);
 
-    setInterval(loop, 0.01);
+    //setInterval(loop, 1);
+    createjs.Ticker.on("tick", loop);
 }
 
 function loop(){
-    x += l_down ? -speed : r_down ? +speed : 0
-    y += u_down ? -speed : d_down ? +speed : 0
+    x += l_down ? -speed : r_down ? +speed : 0;
+    y += u_down ? -speed : d_down ? +speed : 0;
     console.log([u_down, d_down, r_down, l_down]);
     createjs.Tween.get(asteroid).to({x:x, y:y}, 100);
 }
