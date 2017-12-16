@@ -10,7 +10,7 @@ function Weapon(pos_x, pos_y, hitbox_x, hitbox_y, damage_points, life) {
     this.damage_points = damage_points;
 }
 
-Weapon.prototype.tick = function () {
+Weapon.prototype.is_dead = function () {
     this.life -= 1;
 
     return Boolean(this.life)
@@ -20,10 +20,18 @@ Weapon.prototype.affect = function (human) {
     human.deal_damage(this.damage_points)
 }
 
-Weapon.prototype.move = function () {}
+Weapon.prototype.move = function (x, y) {
+    this.pos_x -= x;
+    this.pos_y -= y;
+}
 
 Weapon.prototype.draw = function () {
     // Display dis shi*
+}
+
+Weapon.exist = function (x, y) {
+    this.move(x, y)
+    this.draw()
 }
 
 
@@ -34,7 +42,10 @@ function FlyingWeapon(pos_x, pos_y, v_x, v_y, hitbox_x, hitbox_y, damage_points,
     this.v_y = v_y
 }
 
-FlyingWeapon.prototype.move = function () {
+FlyingWeapon.prototype.move = function (x, y) {
+    this.pos_x -= x;
+    this.pos_y -= y;
+
     this.pos_x += this.v_x
     this.pos_y += this.v_y
 }
