@@ -10,7 +10,7 @@ function Weapon(pos_x, pos_y, hitbox_x, hitbox_y, damage_points, life) {
     this.damage_points = damage_points;
 }
 
-Weapon.prototype.is_dead = function () {
+Weapon.prototype.isDead = function () {
     this.life -= 1;
 
     return Boolean(this.life)
