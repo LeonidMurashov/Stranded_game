@@ -14,6 +14,7 @@ var player_health = 2500;
 var cooldown = 10;
 var hearts = [];
 var text;
+var destroyed = 0;
 
 // All objects
 var thrown = [], enemies = [], items = [];
@@ -221,10 +222,10 @@ function loop(){
     for(i in enemies){
         if (enemies[i].health <= 0){
             enemies[i].sprite.x = 100000;
-            enemies.remove(i);
+            destroyed += 1;
         }
     }
-    if (enemies.length == 0) {
+    if (destroyed == 6) {
         window.location.href = 'youwon.html';
     }
 
@@ -245,7 +246,7 @@ function loop(){
     var life = 2;
     for(i = 0; i < 5; i++)
     {
-        if (i < life)
+        if (i * 500 < player_health)
             hearts[i].visible = true
         else
             hearts[i].visible = false
