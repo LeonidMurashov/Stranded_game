@@ -100,15 +100,6 @@ function start() {
 
     /// Load animations
     var data = {images: ["./assets/chars.png"],
-                    frames: {width:52, height:73},
-                    animations: {
-                        up: { frames: [36,37,38], frequency: 10},
-                        down: { frames: [0,1,2], frequency: 10},
-                        right: { frames: [24,25,26], frequency: 10},
-                        left: { frames: [12,13,14], frequency: 10},
-                }
-        };
-    var data = {images: ["./assets/chars.png"],
                 frames: {width:52, height:73},
                 animations: {
                     up: { frames: [36+6,37+6,38+6], frequency: 10},
@@ -130,7 +121,7 @@ function start() {
 
     for (i = 0; i < 3; i++)
     {
-        enemies.push(new Enemy(stage, player.x, player.y, "./assets/gungirl1.png", 10, 0.001));       
+        enemies.push(new Enemy(stage, player.x, player.y, "./assets/gungirl1.png", 10, 0.9));       
     }
     
     this.document.onkeydown = keyDowned;        
