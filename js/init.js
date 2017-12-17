@@ -5,7 +5,7 @@ var KEYCODE_LEFT = 65, l_down = false,
     KEYCODE_SPACE = 32, space_down = false,
     KEYCODE_E = 69, e_down = false; 
 var stage;
-var player, background;
+var player, background, water;
 var circle, x = 200, y = 200, speed = 2;
 
 
@@ -69,9 +69,19 @@ function start() {
     //bg.x = bg.y = 0;
     //stage.addChild(bg);
 
-    document.body.style.background = "blue";
     //water = new createjs.Shape();
     //water.x = -1000, water.y = -1000
+
+    water = new createjs.Shape();
+    stage.addChild(water); var img2 = new Image();
+    img2.onload = function(){
+         water.graphics.beginBitmapFill(img2, 'repeat');
+         water.graphics.setStrokeStyle(1);
+         water.graphics.beginStroke(createjs.Graphics.getRGB(255,255,0));
+         water.graphics.drawRect(-1000,-1000,3000,3000);
+    }
+    img2.src = "./assets/water.png";
+
 
     background = new createjs.Shape();
     stage.addChild(background); var img = new Image();
@@ -148,6 +158,8 @@ function loop(){
         //createjs.Tween.get(player).to({x:x, y:y}, 10);
         background.x = x;
         background.y = y;
+        water.x = x
+        water.y = y
         stage.update();
     }
 
