@@ -11,7 +11,7 @@ var last_time = 0, time = 0;
 var cooldown = 50;
 
 // All objects
-var thrown = [];
+var thrown = [], enemies = [], items = [];
 
 function Human(x, y, health) {
     this.x = x;
@@ -80,8 +80,6 @@ function playSoundtrack(event) {
 }
     
 function start() { 
-    // Loader image
-    examples.showDistractor();
 
     createjs.Sound.alternateExtensions = ["ogg"];
     createjs.Sound.addEventListener("fileload", playSoundtrack);
@@ -144,14 +142,15 @@ function start() {
     player.y = screen.height/2
     stage.update();
 
-
+    for (i = 0; i < 3; i++)
+    {
+        enemies.push(new Enemy(stage, player.x, player.y, "./assets/gungirl1.png", 10, 0.001));       
+    }
     
     this.document.onkeydown = keyDowned;        
     this.document.onkeyup = keyUpped;   
 
     createjs.Ticker.setFPS(60);
-
-    examples.hideDistractor();
     setInterval(loop, 10);
 }
     var last = [0,0,0,0]
@@ -192,6 +191,14 @@ function loop(){
     thrown.forEach(function(entry) {
         entry.tick(dx, dy);
     });
+
+
+    enemies.forEach(function(entry) {
+        var ball = entry.tick(dx, dy, player);
+        if(ball != 0)
+            thrown.push(ball);
+    });
+
 
     if(space_down && time-last_time > cooldown){
         thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5));
