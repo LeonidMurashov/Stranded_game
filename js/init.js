@@ -14,7 +14,7 @@ var player_health = 2500;
 var cooldown = 10;
 var hearts = [];
 var text;
-var destroyed = 0;
+var destroyed = [0,0,0,0,0];
 
 // All objects
 var thrown = [], enemies = [], items = [];
@@ -222,10 +222,16 @@ function loop(){
     for(i in enemies){
         if (enemies[i].health <= 0){
             enemies[i].sprite.x = 100000;
-            destroyed += 1;
+            destroyed[i] += 1;
         }
     }
-    if (destroyed == 6) {
+    var flag = true;
+    destroyed.forEach(function(entry) {
+        if(entry == 0){
+            flag = false;
+        }
+    });
+    if (flag == true) {
         window.location.href = 'youwon.html';
     }
 
