@@ -1,6 +1,6 @@
 (function() {
 
-    function Throwable(stage, initial_x, initial_y, sprite_path, life, angle, speed) {
+    function Throwable(stage, initial_x, initial_y, sprite_path, life, angle, speed, r) {
         this.Container_constructor();
 
         this.x = initial_x;
@@ -8,6 +8,7 @@
         this.sprite_path = sprite_path; //path to the weapon image
         this.life = life; // number of ticks for the Throwable to act
         this.angle = angle; // the angle (degrees) to throw the weapon at
+        this.r = r;
         this.speed = speed; // the speed of the trow
 
         this.sprite = new createjs.Bitmap(this.sprite_path);

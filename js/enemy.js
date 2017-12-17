@@ -1,12 +1,13 @@
 (function() {
 
-    function Enemy(stage, initial_x, initial_y, life, speed) {
+    function Enemy(stage, initial_x, initial_y, life, speed, r) {
         this.Container_constructor();
 
         this.x = initial_x;
         this.y = initial_y;
         this.life = life; // number of ticks for the Throwable to act
         this.speed = speed; // the speed of the trow
+        this.r = r;
         this.cooldown = 0
         var data = {images: ["./assets/chars.png"],
                         frames: {width:52, height:73},
@@ -19,10 +20,10 @@
             };
         
         var spriteSheet = new createjs.SpriteSheet(data);
-        this.entity = new createjs.BitmapAnimation(spriteSheet);
-        this.entity.x = initial_x
-        this.entity.y = initial_y
-        stage.addChild(this.entity);
+        this.sprite = new createjs.BitmapAnimation(spriteSheet);
+        this.sprite.x = initial_x
+        this.sprite.y = initial_y
+        stage.addChild(this.sprite);
         
         self.last_b = -3
         
@@ -31,7 +32,7 @@
     var p = createjs.extend(Enemy, createjs.Container);
 
     p.tick = function (dx, dy, player) {
-        [this.dx, this.dy] = [player.x - this.entity.x, player.y - this.entity.y];
+        [this.dx, this.dy] = [player.x - this.sprite.x, player.y - this.sprite.y];
 
         // play animation
         var b = Math.floor((Math.atan2(this.dx, this.dy)*180/3.1415+45)/90);
@@ -39,19 +40,19 @@
         {
             switch(b){
                 case 0:
-                    this.entity.gotoAndPlay("down");
+                    this.sprite.gotoAndPlay("down");
                 break;
                 case 2:
-                    this.entity.gotoAndPlay("up"); 
+                    this.sprite.gotoAndPlay("up"); 
                 break;
                 case -2:
-                    this.entity.gotoAndPlay("up"); 
+                    this.sprite.gotoAndPlay("up"); 
                 break;
                 case -1:
-                    this.entity.gotoAndPlay("left"); 
+                    this.sprite.gotoAndPlay("left"); 
                 break;
                 case 1:
-                    this.entity.gotoAndPlay("right"); 
+                    this.sprite.gotoAndPlay("right"); 
                 break;
             }
         }
@@ -59,16 +60,16 @@
 
         var a = this.speed;
 
-        this.entity.x += this.dx > 0 ? a : -a;
-        this.entity.y += this.dy > 0 ? a : -a;
+        this.sprite.x += this.dx > 0 ? a : -a;
+        this.sprite.y += this.dy > 0 ? a : -a;
 
-        this.entity.x += dx
-        this.entity.y += dy
+        this.sprite.x += dx
+        this.sprite.y += dy
 
         var ball = 0;
         if(this.cooldown == 0)
         {
-            ball = new Throwable(stage, this.entity.x, this.entity.y, "./assets/asteroid.png", 1000, Math.atan2(-this.dx,-this.dy)*180/3.1415+90, 5)
+            ball = new Throwable(stage, this.sprite.x, this.sprite.y, "./assets/asteroid.png", 1000, Math.atan2(-this.dx,-this.dy)*180/3.1415+90, 5, 10)
             this.cooldown = 80
         }
 

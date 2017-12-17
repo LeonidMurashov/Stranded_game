@@ -5,8 +5,10 @@ var KEYCODE_LEFT = 65, l_down = false,
     KEYCODE_SPACE = 32, space_down = false,
     KEYCODE_E = 69, e_down = false; 
 var stage;
+var item;
 var player, background, water;
 var circle, x = 200, y = 200, speed = 2;
+var player_r = 10;
 var last_time = 0, time = 0;
 var cooldown = 50;
 
@@ -121,16 +123,22 @@ function start() {
 
     for (i = 0; i < 3; i++)
     {
-        enemies.push(new Enemy(stage, Math.random()*1000, Math.random()*1000, 10, Math.random() + 0.5));       
+        enemies.push(new Enemy(stage, Math.random()*1000, Math.random()*1000, 10, Math.random() + 0.5));
     }
     
-    this.document.onkeydown = keyDowned;        
+    this.document.onkeydown = keyDowned;
     this.document.onkeyup = keyUpped;   
 
     createjs.Ticker.setFPS(60);
     setInterval(loop, 10);
+
+    thrown.push(new Item(stage, 50, 50));
 }
-    var last = [0,0,0,0]
+var last = [0,0,0,0]
+
+function in_intersection(obj1, obj2) {
+    return Math.pow((Math.pow(obj1.sprite.x - obj2.sprite.x, 2) + Math.pow(obj1.sprite.y - obj2.sprite.y, 2)), 0.5) <= (obj1.r + obj2.r)
+}
 
 function loop(){
     var s = speed;
@@ -176,24 +184,22 @@ function loop(){
             thrown.push(ball);
     });
 
+    enemies.forEach(function(enemy) {
+        thrown.forEach(function(ball) {
+            if(in_intersection(enemy, ball)) {
+                console.log('intersection')
+            }
+        });
+    });
+
 
     if(space_down && time-last_time > cooldown){
-        thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5));
+        thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5, 10));
         last_time = time
     }
-
 
     stage.update();
     time++;
 }
 
-
-    /*var imgData = new createjs.Bitmap("./assets/heightmap_tmp.png")
-    var pixel = new Array();
-    for(i=0;i<imgData.height;i++){
-        pixel[i] = new Array();
-        for(j=0;j<imgData.width;j++){
-            pixel[i][j] = imgData.data[i*canvas.width+j*4];
-        }
-    }*/
 
