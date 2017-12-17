@@ -15,6 +15,7 @@ var player_health = 5000;
 
 // All objects
 var thrown = [], enemies = [], items = [];
+var enemy_thrown = [];
 
 function keyDowned(event) {
     switch(event.keyCode) {
@@ -138,7 +139,7 @@ function start() {
 var last = [0,0,0,0]
 
 function in_intersection(obj1, obj2) {
-    return Math.pow((Math.pow(obj1.sprite.x - obj2.sprite.x, 2) + Math.pow(obj1.sprite.y - obj2.sprite.y, 2)), 0.5) <= (obj1.r + obj2.r)
+    return Math.pow((Math.pow(obj1.sprite.x - obj2.sprite.x, 2) + Math.pow(obj1.sprite.y - obj2.sprite.y, 2)), 0.5) <= (100)
 }
 
 function loop(){
@@ -177,12 +178,15 @@ function loop(){
     thrown.forEach(function(entry) {
         entry.tick(dx, dy);
     });
+    enemy_thrown.forEach(function(entry) {
+        entry.tick(dx, dy);
+    });
 
 
     enemies.forEach(function(entry) {
         var ball = entry.tick(dx, dy, player);
         if(ball != 0)
-            thrown.push(ball);
+            enemy_thrown.push(ball);
     });
 
     enemies.forEach(function(enemy) {
@@ -191,6 +195,12 @@ function loop(){
                 console.log('intersection')
             }
         });
+    });
+
+    enemy_thrown.forEach(function(ball){
+        if(Math.pow((Math.pow(player.x - ball.sprite.x, 2) + Math.pow(player.y - ball.sprite.y, 2)), 0.5) <= 100){
+            console.log('intersection player')
+        }
     });
 
 
