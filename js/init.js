@@ -10,8 +10,10 @@ var player, background, water;
 var circle, x = 200, y = 200, speed = 4;
 var player_r = 10;
 var last_time = 0, time = 0;
-var cooldown = 50;
 var player_health = 2500;
+var cooldown = 10;
+var hearts = [];
+var text;
 
 // All objects
 var thrown = [], enemies = [], items = [];
@@ -119,17 +121,36 @@ function start() {
     player.gotoAndPlay("down"); 
     stage.addChild(player);
 
+
+    text = new createjs.Text();
+    text.text = "Score: " + 0
+    text.font = "40px TimesNewRoman"
+    text.x = 10;
+    text.y = 10;
+    stage.addChild(text)
+
+
+    // Hearts
+    for(i = 0; i < 5; i++)
+    {
+        var heart = new createjs.Bitmap("./assets/heart.png");
+        heart.x = i * 70 
+        heart.y = screen.height - 100
+        stage.addChild(heart);
+        hearts.push(heart);
+    }
+
     player.x = screen.width/2;      
     player.y = screen.height/2
     stage.update();
 
     for (i = 0; i < 6; i++)
     {
-        enemies.push(new Enemy(stage, Math.random()*1000, Math.random()*1000, 10, Math.random() + 0.5));
+        enemies.push(new Enemy(stage, Math.random()*1000, Math.random()*1000, 10, Math.random()/2 + 0.5));
     }
     
     this.document.onkeydown = keyDowned;
-    this.document.onkeyup = keyUpped;   
+    this.document.onkeyup = keyUpped;
 
     createjs.Ticker.setFPS(60);
     setInterval(loop, 10);
@@ -220,6 +241,18 @@ function loop(){
         thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5, 10));
         last_time = time
     }
+
+    var life = 2;
+    for(i = 0; i < 5; i++)
+    {
+        if (i < life)
+            hearts[i].visible = true
+        else
+            hearts[i].visible = false
+    }
+
+
+    text.text = "Score: " + Math.floor(time/10)
 
     stage.update();
     time++;

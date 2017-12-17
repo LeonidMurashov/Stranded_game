@@ -3,7 +3,7 @@
     function Item(stage, initial_x, initial_y) {
         this.Container_constructor();
 
-        this.sprite_path = "assets/chest.jpg";
+        this.sprite_path = "assets/shipwreck.png";
         this.stage = stage;
         this.x = initial_x;
         this.y = initial_y;
@@ -15,8 +15,8 @@
 
     p.setup = function () {
         this.sprite = new createjs.Bitmap(this.sprite_path);
-        this.sprite.scaleX = 0.015;
-        this.sprite.scaleY = 0.015;
+        this.sprite.scaleX = 2;
+        this.sprite.scaleY = 2;
         this.sprite.x = this.x;
         this.sprite.y = this.y;
 
