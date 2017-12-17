@@ -9,7 +9,7 @@
         this.speed = speed; // the speed of the trow
         this.r = r;
         this.cooldown = 0
-        this.health = 1000;
+        this.health = 500;
 
         var data = {images: ["./assets/chars.png"],
                         frames: {width:52, height:73},

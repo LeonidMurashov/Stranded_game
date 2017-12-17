@@ -7,11 +7,11 @@ var KEYCODE_LEFT = 65, l_down = false,
 var stage;
 var item;
 var player, background, water;
-var circle, x = 200, y = 200, speed = 2;
+var circle, x = 200, y = 200, speed = 4;
 var player_r = 10;
 var last_time = 0, time = 0;
 var cooldown = 50;
-var player_health = 5000;
+var player_health = 2500;
 
 // All objects
 var thrown = [], enemies = [], items = [];
@@ -123,7 +123,7 @@ function start() {
     player.y = screen.height/2
     stage.update();
 
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < 6; i++)
     {
         enemies.push(new Enemy(stage, Math.random()*1000, Math.random()*1000, 10, Math.random() + 0.5));
     }
@@ -192,17 +192,29 @@ function loop(){
     enemies.forEach(function(enemy) {
         thrown.forEach(function(ball) {
             if(in_intersection(enemy, ball)) {
-                console.log('intersection')
+                enemy.health -= 1;
+                console.log(enemy.health);
             }
         });
     });
+    for(i in enemies){
+        if (enemies[i].health <= 0){
+            enemies[i].sprite.x = 100000;
+            enemies.remove(i);
+        }
+    }
+    if (enemies.length == 0) {
+        window.location.href = 'youwon.html';
+    }
 
     enemy_thrown.forEach(function(ball){
         if(Math.pow((Math.pow(player.x - ball.sprite.x, 2) + Math.pow(player.y - ball.sprite.y, 2)), 0.5) <= 100){
-            console.log('intersection player')
+            player_health -= 1;
         }
     });
-
+    if (player_health <= 0) {
+        window.location.href = 'gameover.html';
+    }
 
     if(space_down && time-last_time > cooldown){
         thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5, 10));
