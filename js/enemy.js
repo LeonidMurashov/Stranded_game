@@ -70,7 +70,7 @@
         if(this.cooldown == 0)
         {
             ball = new Throwable(stage, this.sprite.x, this.sprite.y, "./assets/asteroid.png", 1000, Math.atan2(-this.dx,-this.dy)*180/3.1415+90, 5, 10)
-            this.cooldown = 80
+            this.cooldown = 160
         }
 
         this.cooldown -= 1
