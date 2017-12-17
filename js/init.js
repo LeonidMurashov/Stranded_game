@@ -9,6 +9,20 @@ var player, background, water;
 var circle, x = 200, y = 200, speed = 2;
 
 
+function Human(x, y, health) {
+    this.x = x;
+    this.y = y;
+    this.health = health;
+}
+
+Human.prototype.dealDamage = function(damage) {
+    this.health -= damage;
+};
+
+Human.prototype.isDead = function() {
+    return this.health <= 0;
+};
+
 function keyDowned(event) {
     switch(event.keyCode) {
         case KEYCODE_LEFT:
@@ -64,13 +78,6 @@ function start() {
     screen.height = window.innerHeight;
     
     stage = new createjs.Stage(document.getElementById("screen"));
-
-   // bg = new createjs.Bitmap("./assets/Terrain/Textures/g_gr2_00_COLOR.png");
-    //bg.x = bg.y = 0;
-    //stage.addChild(bg);
-
-    //water = new createjs.Shape();
-    //water.x = -1000, water.y = -1000
 
     water = new createjs.Shape();
     stage.addChild(water); var img2 = new Image();
@@ -134,34 +141,34 @@ function start() {
     var last = [0,0,0,0]
 
 function loop(){
-        var s = speed;
-        if ((l_down || r_down) && (u_down || d_down)){
-            s /= Math.sqrt(2);
-        }
-        x -= l_down ? -s : r_down ? +s : 0
-        y -= u_down ? -s : d_down ? +s : 0
-        
-        if ([u_down, d_down, r_down, l_down].toString() != last.toString()){
-            if (r_down)
-                player.gotoAndPlay("right"); 
-            if (l_down)
-                player.gotoAndPlay("left"); 
-            if (u_down)
-                player.gotoAndPlay("up"); 
-            if (d_down)
-                player.gotoAndPlay("down");
-            last = [u_down, d_down, r_down, l_down]
-        }
-
-        if (! (l_down || r_down || u_down || d_down))
-            player.stop();
-        //createjs.Tween.get(player).to({x:x, y:y}, 10);
-        background.x = x;
-        background.y = y;
-        water.x = x
-        water.y = y
-        stage.update();
+    var s = speed;
+    if ((l_down || r_down) && (u_down || d_down)){
+        s /= Math.sqrt(2);
     }
+    x -= l_down ? -s : r_down ? +s : 0
+    y -= u_down ? -s : d_down ? +s : 0
+
+    if ([u_down, d_down, r_down, l_down].toString() != last.toString()){
+        if (r_down)
+            player.gotoAndPlay("right"); 
+        if (l_down)
+            player.gotoAndPlay("left"); 
+        if (u_down)
+            player.gotoAndPlay("up"); 
+        if (d_down)
+            player.gotoAndPlay("down");
+        last = [u_down, d_down, r_down, l_down]
+    }
+
+    if (! (l_down || r_down || u_down || d_down))
+        player.stop();
+    //createjs.Tween.get(player).to({x:x, y:y}, 10);
+    background.x = x;
+    background.y = y;
+    water.x = x
+    water.y = y
+    stage.update();
+}
 
 
     /*var imgData = new createjs.Bitmap("./assets/heightmap_tmp.png")
@@ -172,3 +179,4 @@ function loop(){
             pixel[i][j] = imgData.data[i*canvas.width+j*4];
         }
     }*/
+
