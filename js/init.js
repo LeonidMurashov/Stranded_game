@@ -139,7 +139,11 @@ function start() {
     createjs.Ticker.setFPS(60);
     setInterval(loop, 10);
 }
-    var last = [0,0,0,0]
+var last = [0,0,0,0]
+
+function in_intersection(obj1, obj2) {
+    return obj1.sprite.hitTest(obj2.sprite.x, obj2.sprite.y)
+}
 
 function loop(){
     var s = speed;
@@ -184,6 +188,13 @@ function loop(){
         if(ball != 0)
             thrown.push(ball);
     });
+
+    enemies.forEach(function(enemy) {
+        thrown.forEach(function(ball) {
+            if(in_intersection(enemy, ball))
+                alert('intersection')
+        }
+    }
 
 
     if(space_down && time-last_time > cooldown){
