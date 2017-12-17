@@ -122,8 +122,8 @@ function start() {
 			last = [u_down, d_down, r_down, l_down]
 		}
 
-		//if (! (l_down || r_down || u_down || d_down))
-		//	asteroid.stop();
+		if (! (l_down || r_down || u_down || d_down))
+			asteroid.stop();
 		//createjs.Tween.get(asteroid).to({x:x, y:y}, 10);
 		asteroid.x = x
 		asteroid.y = y
