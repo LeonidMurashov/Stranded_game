@@ -12,21 +12,7 @@ var last_time = 0, time = 0;
 var cooldown = 50;
 
 // All objects
-var thrown = [];
-
-function Human(x, y, health) {
-    this.x = x;
-    this.y = y;
-    this.health = health;
-}
-
-Human.prototype.dealDamage = function(damage) {
-    this.health -= damage;
-};
-
-Human.prototype.isDead = function() {
-    return this.health <= 0;
-};
+var thrown = [], enemies = [], items = [];
 
 function keyDowned(event) {
     switch(event.keyCode) {
@@ -76,13 +62,11 @@ function keyUpped(event) {
 
 function playSoundtrack(event) {
     var instance = createjs.Sound.play(event.src);
-    instance.on("complete", this.handleComplete, this);
+    instance.on("complete", playSoundtrack);
     instance.volume = 0.5;
 }
     
 function start() { 
-    // Loader image
-    examples.showDistractor();
 
     createjs.Sound.alternateExtensions = ["ogg"];
     createjs.Sound.addEventListener("fileload", playSoundtrack);
@@ -117,15 +101,6 @@ function start() {
 
     /// Load animations
     var data = {images: ["./assets/chars.png"],
-                    frames: {width:52, height:73},
-                    animations: {
-                        up: { frames: [36,37,38], frequency: 10},
-                        down: { frames: [0,1,2], frequency: 10},
-                        right: { frames: [24,25,26], frequency: 10},
-                        left: { frames: [12,13,14], frequency: 10},
-                }
-        };
-    var data = {images: ["./assets/chars.png"],
                 frames: {width:52, height:73},
                 animations: {
                     up: { frames: [36+6,37+6,38+6], frequency: 10},
@@ -145,14 +120,15 @@ function start() {
     player.y = screen.height/2
     stage.update();
 
-
+    for (i = 0; i < 3; i++)
+    {
+        enemies.push(new Enemy(stage, player.x, player.y, "./assets/gungirl1.png", 10, 0.9));       
+    }
     
     this.document.onkeydown = keyDowned;        
     this.document.onkeyup = keyUpped;   
 
     createjs.Ticker.setFPS(60);
-
-    examples.hideDistractor();
     setInterval(loop, 10);
 
     thrown.push(new Item(stage, 50, 50));
@@ -166,6 +142,11 @@ function loop(){
     }
     dx = l_down ? s : r_down ? -s : 0
     dy = u_down ? s : d_down ? -s : 0
+
+    if(background.x + dx - 25 > player.x || background.x + 1000 - 25 + dx < player.x)
+        dx = 0;
+    if(background.y + dy - 60 > player.y || background.y + 1000 - 60 + dy < player.y)
+        dy = 0;
 
     if ([u_down, d_down, r_down, l_down].toString() != last.toString()){
         if (r_down)
@@ -187,10 +168,17 @@ function loop(){
     water.x = water.x + dx
     water.y = water.y + dy
 
-
     thrown.forEach(function(entry) {
         entry.tick(dx, dy);
     });
+
+
+    enemies.forEach(function(entry) {
+        var ball = entry.tick(dx, dy, player);
+        if(ball != 0)
+            thrown.push(ball);
+    });
+
 
     if(space_down && time-last_time > cooldown){
         thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5));

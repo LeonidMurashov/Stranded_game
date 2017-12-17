@@ -19,11 +19,11 @@
     var p = createjs.extend(Throwable, createjs.Container);
 
     p.tick = function (delta_x, delta_y) {
-        [x, y] = [Math.cos(Math.radians(this.angle))*this.speed,
+        [this.x, this.y] = [Math.cos(Math.radians(this.angle))*this.speed,
                   Math.sin(Math.radians(-this.angle))*this.speed];
 
-        this.sprite.x += x;
-        this.sprite.y += y;
+        this.sprite.x += this.x;
+        this.sprite.y += this.y;
 
         if (this.life) {
             this.sprite.x += delta_x;
