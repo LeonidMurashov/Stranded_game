@@ -72,10 +72,20 @@ function keyUpped(event) {
         break;
     }
 }
+
+function playSoundtrack(event) {
+    var instance = createjs.Sound.play(event.src);
+    instance.on("complete", this.handleComplete, this);
+    instance.volume = 0.5;
+}
     
 function start() { 
     // Loader image
     examples.showDistractor();
+
+    createjs.Sound.alternateExtensions = ["ogg"];
+    createjs.Sound.addEventListener("fileload", playSoundtrack);
+    createjs.Sound.registerSound("./assets/soundtrack.mp3", "sound");
 
     screen = document.getElementById('screen');
     screen.width = window.innerWidth;
