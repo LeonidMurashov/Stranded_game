@@ -1,6 +1,6 @@
 (function() {
 
-    function Enemy(stage, initial_x, initial_y, sprite_path, life, speed) {
+    function Enemy(stage, initial_x, initial_y, sprite_path, life, speed, r) {
         this.Container_constructor();
 
         this.x = initial_x;
@@ -12,6 +12,7 @@
         this.sprite = new createjs.Bitmap(this.sprite_path);
         this.sprite.x = initial_x;
         this.sprite.y = initial_y;
+        this.r = r;
         this.cooldown = 0
 
         var data = {images: ["./assets/chars.png"],
@@ -49,7 +50,7 @@
         var ball = 0;
         if(this.cooldown == 0)
         {
-            ball = new Throwable(stage, this.sprite.x, this.sprite.y, "./assets/asteroid.png", 1000, Math.atan2(-this.dx,-this.dy)*180/3.1415+90, 5)
+            ball = new Throwable(stage, this.sprite.x, this.sprite.y, "./assets/asteroid.png", 1000, Math.atan2(-this.dx,-this.dy)*180/3.1415+90, 5, 10)
             this.cooldown = 40
         }
 

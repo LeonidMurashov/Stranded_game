@@ -7,6 +7,7 @@ var KEYCODE_LEFT = 65, l_down = false,
 var stage;
 var player, background, water;
 var circle, x = 200, y = 200, speed = 2;
+var player_r = 10;
 var last_time = 0, time = 0;
 var cooldown = 50;
 
@@ -119,12 +120,12 @@ function start() {
     player.y = screen.height/2
     stage.update();
 
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < 1; i++)
     {
-        enemies.push(new Enemy(stage, player.x, player.y, "./assets/gungirl1.png", 10, 0.9));       
+        enemies.push(new Enemy(stage, player.x + Math.random() * 1000, player.y + Math.random() * 1000, "./assets/gungirl1.png", 10, 0.9, 20));       
     }
     
-    this.document.onkeydown = keyDowned;        
+    this.document.onkeydown = keyDowned;
     this.document.onkeyup = keyUpped;   
 
     createjs.Ticker.setFPS(60);
@@ -133,7 +134,7 @@ function start() {
 var last = [0,0,0,0]
 
 function in_intersection(obj1, obj2) {
-    return obj1.sprite.hitTest(obj2.sprite.x, obj2.sprite.y)
+    return Math.pow((Math.pow(obj1.sprite.x - obj2.sprite.x, 2) + Math.pow(obj1.sprite.y - obj2.sprite.y, 2)), 0.5) <= (obj1.r + obj2.r)
 }
 
 function loop(){
@@ -182,14 +183,15 @@ function loop(){
 
     enemies.forEach(function(enemy) {
         thrown.forEach(function(ball) {
-            if(in_intersection(enemy, ball))
-                alert('intersection')
-        }
-    }
+            if(in_intersection(enemy, ball)) {
+                console.log('intersection')
+            }
+        });
+    });
 
 
     if(space_down && time-last_time > cooldown){
-        thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5));
+        thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5, 10));
         last_time = time
     }
 
