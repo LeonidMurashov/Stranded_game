@@ -5,6 +5,7 @@ var KEYCODE_LEFT = 65, l_down = false,
     KEYCODE_SPACE = 32, space_down = false,
     KEYCODE_E = 69, e_down = false; 
 var stage;
+var item;
 var player, background, water;
 var circle, x = 200, y = 200, speed = 2;
 var last_time = 0, time = 0;
@@ -153,6 +154,8 @@ function start() {
 
     examples.hideDistractor();
     setInterval(loop, 10);
+
+    thrown.push(new Item(stage, 50, 50));
 }
     var last = [0,0,0,0]
 
@@ -194,18 +197,8 @@ function loop(){
         last_time = time
     }
 
-
     stage.update();
     time++;
 }
 
-
-    /*var imgData = new createjs.Bitmap("./assets/heightmap_tmp.png")
-    var pixel = new Array();
-    for(i=0;i<imgData.height;i++){
-        pixel[i] = new Array();
-        for(j=0;j<imgData.width;j++){
-            pixel[i][j] = imgData.data[i*canvas.width+j*4];
-        }
-    }*/
 
