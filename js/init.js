@@ -103,14 +103,14 @@ function start() {
 
     /// Load animations
     var data = {images: ["./assets/chars.png"],
-                frames: {width:52, height:73},
-                animations: {
-                    up: { frames: [36+6,37+6,38+6], frequency: 10},
-                    down: { frames: [0+6,1+6,2+6], frequency: 10},
-                    right: { frames: [24+6,25+6,26+6], frequency: 10},
-                    left: { frames: [12+6,13+6,14+6], frequency: 10},
-            }
-    };
+                    frames: {width:52, height:73},
+                    animations: {
+                        up: { frames: [36,37,38], frequency: 10},
+                        down: { frames: [0,1,2], frequency: 10},
+                        right: { frames: [24,25,26], frequency: 10},
+                        left: { frames: [12,13,14], frequency: 10},
+                }
+        };
 
     var spriteSheet = new createjs.SpriteSheet(data);
 
@@ -122,9 +122,9 @@ function start() {
     player.y = screen.height/2
     stage.update();
 
-    for (i = 0; i < 1; i++)
+    for (i = 0; i < 3; i++)
     {
-        enemies.push(new Enemy(stage, player.x + Math.random() * 1000, player.y + Math.random() * 1000, "./assets/gungirl1.png", 10, 0.9, 20));       
+        enemies.push(new Enemy(stage, Math.random()*1000, Math.random()*1000, 10, Math.random() + 0.5));
     }
     
     this.document.onkeydown = keyDowned;
