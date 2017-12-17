@@ -7,7 +7,11 @@ var KEYCODE_LEFT = 65, l_down = false,
 var stage;
 var player, background, water;
 var circle, x = 200, y = 200, speed = 2;
+var last_time = 0, time = 0;
+var cooldown = 50;
 
+// All objects
+var thrown = [], enemies = [], items = [];
 
 function Human(x, y, health) {
     this.x = x;
@@ -76,8 +80,6 @@ function playSoundtrack(event) {
 }
     
 function start() { 
-    // Loader image
-    examples.showDistractor();
 
     createjs.Sound.alternateExtensions = ["ogg"];
     createjs.Sound.addEventListener("fileload", playSoundtrack);
@@ -106,7 +108,7 @@ function start() {
          background.graphics.beginBitmapFill(img, 'repeat');
          background.graphics.setStrokeStyle(20);
          background.graphics.beginStroke(createjs.Graphics.getRGB(255,255,0));
-         background.graphics.drawRect(0,40,1000,1000);
+         background.graphics.drawRect(0,0,1000,1000);
     }
     img.src = "./assets/Terrain/Textures/g_gr2_00_COLOR.png";
 
@@ -133,19 +135,22 @@ function start() {
     var spriteSheet = new createjs.SpriteSheet(data);
 
     player = new createjs.BitmapAnimation(spriteSheet);
-    player.gotoAndPlay("up"); 
+    player.gotoAndPlay("down"); 
     stage.addChild(player);
 
     player.x = screen.width/2;      
     player.y = screen.height/2
     stage.update();
+
+    for (i = 0; i < 3; i++)
+    {
+        enemies.push(new Enemy(stage, player.x, player.y, "./assets/gungirl1.png", 10, 0.001));       
+    }
     
     this.document.onkeydown = keyDowned;        
     this.document.onkeyup = keyUpped;   
 
     createjs.Ticker.setFPS(60);
-
-    examples.hideDistractor();
     setInterval(loop, 10);
 }
     var last = [0,0,0,0]
@@ -155,12 +160,17 @@ function loop(){
     if ((l_down || r_down) && (u_down || d_down)){
         s /= Math.sqrt(2);
     }
-    x -= l_down ? -s : r_down ? +s : 0
-    y -= u_down ? -s : d_down ? +s : 0
+    dx = l_down ? s : r_down ? -s : 0
+    dy = u_down ? s : d_down ? -s : 0
+
+    if(background.x + dx - 25 > player.x || background.x + 1000 - 25 + dx < player.x)
+        dx = 0;
+    if(background.y + dy - 60 > player.y || background.y + 1000 - 60 + dy < player.y)
+        dy = 0;
 
     if ([u_down, d_down, r_down, l_down].toString() != last.toString()){
         if (r_down)
-            player.gotoAndPlay("right"); 
+            player.gotoAndPlay("right");
         if (l_down)
             player.gotoAndPlay("left"); 
         if (u_down)
@@ -173,11 +183,31 @@ function loop(){
     if (! (l_down || r_down || u_down || d_down))
         player.stop();
     //createjs.Tween.get(player).to({x:x, y:y}, 10);
-    background.x = x;
-    background.y = y;
-    water.x = x
-    water.y = y
+    background.x = background.x + dx;
+    background.y = background.y + dy;
+    water.x = water.x + dx
+    water.y = water.y + dy
+
+    thrown.forEach(function(entry) {
+        entry.tick(dx, dy);
+    });
+
+
+    enemies.forEach(function(entry) {
+        var ball = entry.tick(dx, dy, player);
+        if(ball != 0)
+            thrown.push(ball);
+    });
+
+
+    if(space_down && time-last_time > cooldown){
+        thrown.push(new Throwable(stage, player.x, player.y, "./assets/asteroid.png", 1000, Math.atan2(dx,dy)*180/3.1415+90, 5));
+        last_time = time
+    }
+
+
     stage.update();
+    time++;
 }
 
 
