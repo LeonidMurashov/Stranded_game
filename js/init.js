@@ -11,6 +11,7 @@ var circle, x = 200, y = 200, speed = 2;
 var player_r = 10;
 var last_time = 0, time = 0;
 var cooldown = 50;
+var player_health = 5000;
 
 // All objects
 var thrown = [], enemies = [], items = [];
@@ -202,4 +203,9 @@ function loop(){
     time++;
 }
 
-
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
