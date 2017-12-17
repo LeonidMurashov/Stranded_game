@@ -164,6 +164,11 @@ function loop(){
     dx = l_down ? s : r_down ? -s : 0
     dy = u_down ? s : d_down ? -s : 0
 
+    if(background.x + dx - 25 > player.x || background.x + 1000 - 25 + dx < player.x)
+        dx = 0;
+    if(background.y + dy - 60 > player.y || background.y + 1000 - 60 + dy < player.y)
+        dy = 0;
+
     if ([u_down, d_down, r_down, l_down].toString() != last.toString()){
         if (r_down)
             player.gotoAndPlay("right");
@@ -183,7 +188,6 @@ function loop(){
     background.y = background.y + dy;
     water.x = water.x + dx
     water.y = water.y + dy
-
 
     thrown.forEach(function(entry) {
         entry.tick(dx, dy);
