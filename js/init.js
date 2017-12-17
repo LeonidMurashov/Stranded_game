@@ -71,7 +71,7 @@ function keyUpped(event) {
 
 function playSoundtrack(event) {
     var instance = createjs.Sound.play(event.src);
-    instance.on("complete", this.handleComplete, this);
+    instance.on("complete", playSoundtrack);
     instance.volume = 0.5;
 }
     
