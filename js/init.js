@@ -73,7 +73,7 @@ function start() {
             	}
 		};*/
 	var data = {images: ["./assets/chars.png"],
-				frames: {width:52, height:72},
+				frames: {width:52, height:73},
 				animations: {
 					up: { frames: [36+6,37+6,38+6], frequency: 10},
 					down: { frames: [0+6,1+6,2+6], frequency: 10},
