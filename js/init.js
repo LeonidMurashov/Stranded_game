@@ -13,20 +13,6 @@ var cooldown = 50;
 // All objects
 var thrown = [], enemies = [], items = [];
 
-function Human(x, y, health) {
-    this.x = x;
-    this.y = y;
-    this.health = health;
-}
-
-Human.prototype.dealDamage = function(damage) {
-    this.health -= damage;
-};
-
-Human.prototype.isDead = function() {
-    return this.health <= 0;
-};
-
 function keyDowned(event) {
     switch(event.keyCode) {
         case KEYCODE_LEFT:
