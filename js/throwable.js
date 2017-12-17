@@ -1,6 +1,6 @@
 (function() {
 
-    function Throwable(initial_x, initial_y, sprite_path, life, angle, speed) {
+    function Throwable(stage, initial_x, initial_y, sprite_path, life, angle, speed) {
         this.Container_constructor();
 
         this.x = initial_x;
@@ -10,29 +10,24 @@
         this.angle = angle; // the angle (degrees) to throw the weapon at
         this.speed = speed; // the speed of the trow
 
-        this.setup();
+        this.sprite = new createjs.Bitmap(this.sprite_path);
+        this.sprite.x = initial_x;
+        this.sprite.y = initial_y;
+
+        stage.addChild(this.sprite);
     }
     var p = createjs.extend(Throwable, createjs.Container);
-
-
-    p.setup = function() {
-        var sprite = new createjs.Bitmap(this.sprite_path);
-
-        var object = new createjs.Shape();
-
-        this.addChild(object, sprite);
-    };
 
     p.tick = function (delta_x, delta_y) {
         [x, y] = [Math.cos(Math.radians(this.angle))*this.speed,
                   Math.sin(Math.radians(-this.angle))*this.speed];
 
-        this.x += x;
-        this.y += y;
+        this.sprite.x += x;
+        this.sprite.y += y;
 
         if (this.life) {
-            this.x -= delta_x;
-            this.y -= delta_y;
+            this.sprite.x += delta_x;
+            this.sprite.y += delta_y;
         }
     };
 
